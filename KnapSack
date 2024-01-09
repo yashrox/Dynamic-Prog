@@ -1,0 +1,101 @@
+DP Questions
+KnapSack -> 0/1 , Greedy approach
+
+
+int totalSumPossible(int* arr, int n, int sum) {
+    if (sum == 0) {
+        return 1;
+    }
+    if (sum < 0 || n == 0) {
+        return 0;
+    }
+    if (sum < arr[n-1]) {
+        return totalSumPossible(arr, n-1, sum);
+    }
+    return totalSumPossible(arr, n-1, sum-arr[n-1]) + totalSumPossible(arr, n-1, sum);
+}
+
+
+bool equalSumPartition(int* arr, int n, int sum) {
+             
+    if (sum == 0) {
+        return true;
+    }
+    if (n ==0 || sum < 0) {
+        return false;
+    }
+    if (sum < arr[n-1]) {
+        return equalSumPartition(arr, n-1, sum);
+    }
+    
+    return equalSumPartition(arr, n-1, sum - arr[n-1]) || equalSumPartition(arr, n-1, sum);
+}
+
+bool isPossibleToConvertIntoSubset(int* arr, int n) {
+    int sum = 0;
+    
+    for (int i=0; i<n; i++) {
+        sum+=arr[i];
+    }
+    
+    if (sum%2 != 0) {
+        return false;
+    }
+    
+    return equalSumPartition(arr, n, sum/2);
+}
+
+
+int countMinDifference(int* arr, int n, int sum, int currentValue, int diff) {
+    int totalValue = 0;
+    if (n==0 || sum == 0) {
+        return totalValue;
+    }
+    int val = currentValue + arr[n-1];
+    if (sum < val) {
+        return countMinDifference(arr, n-1, sum, currentValue, diff);
+    }
+    
+    if (abs(sum- val - val) == diff) {
+        cout<<val<<"  "<<currentValue<<endl;
+        totalValue++;
+    }
+    
+    return totalValue + countMinDifference(arr, n-1, sum, val, diff) + countMinDifference(arr, n-1, sum, currentValue, diff); 
+}
+
+int targetSum(int* arr, int sum, int n, int diff) {
+    
+    int totalCount = 0;
+    
+    if (sum == diff) {
+        totalCount = 1;
+    }
+    
+    if (n ==0 || sum < 0) {
+        return totalCount;
+    }
+  
+    return totalCount + targetSum(arr, sum + arr[n-1], n - 1, diff) + targetSum(arr, sum - arr[n-1], n-1, diff);
+}
+
+int rodCutting(int* arr, int* price, int n, int size, int** dyArr) {
+    if (n == 0 || size <= 0) {
+        return 0;
+    }
+    
+    if (dyArr[n-1][size] != -1) {
+        return dyArr[n-1][size];
+    }
+    
+    if (size < arr[n-1]) {
+        return rodCutting(arr, price, n-1, size, dyArr);
+    }
+    
+    int include = price[n-1] + rodCutting(arr, price, n, size - arr[n-1], dyArr);
+    int exclude = rodCutting(arr, price, n-1, size, dyArr);
+    
+    dyArr[n-1][size] = max(include, exclude);
+    
+    return dyArr[n-1][size];
+}
