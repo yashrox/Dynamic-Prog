@@ -99,3 +99,31 @@ int rodCutting(int* arr, int* price, int n, int size, int** dyArr) {
     
     return dyArr[n-1][size];
 }
+
+
+
+// Count of min coins to make the amount
+ int coin(vector<int>& coins, int amount, int dp[]) {
+        if (amount == 0) {
+            return 0;
+        }
+        if (amount < 0) {
+            return INT_MAX;
+        }
+
+        if (dp[amount] != -1) {
+            return dp[amount];
+        }
+
+        int minCount = INT_MAX;
+        for (int i=0; i<coins.size(); i++) {
+            int ans = coin(coins, amount-coins[i], dp);
+            if (ans != INT_MAX) {
+                minCount = min(minCount, ans+1);
+            }
+        }
+        
+        dp[amount] = minCount;
+
+        return minCount;        
+    } 
