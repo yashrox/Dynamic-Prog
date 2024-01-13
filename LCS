@@ -12,3 +12,43 @@ int LCS(string s1, string s2) {
     
     return max(include, exclude);
 }
+
+
+// Check this ******************************************************************************************************************
+#include <bits/stdc++.h>
+
+using namespace std;
+
+  int LCSubstr(string s1, string s2, vector<vector<int>>& dp, int sum) {
+    if (s1.length() == 0 || s2.length() == 0) {
+        return sum;
+    }
+    if (dp[s1.length()][s2.length()] != -1) {
+        return dp[s1.length()][s2.length()];
+    }
+    int maxValue = 0;
+    int currentValue = 0;
+    
+    if (s1[0] == s2[0]) {
+        cout<<s1[0]<<"  "<<s2[0]<<" "<<" match "<<sum<<endl;
+        cout<<s1.substr(1)<<"  "<<s2.substr(1)<<" substr after match "<<endl;
+        currentValue = LCSubstr(s1.substr(1), s2.substr(1), dp, sum+1);
+    }
+    // cout<<s1<<"  "<<s2<<"   "<<sum<<"  "<<s1.length()<<" "<<s2.length()<<endl;
+    int include = LCSubstr(s1,s2.substr(1), dp, 0);
+    int exclude = LCSubstr(s1.substr(1), s2, dp, 0);
+    maxValue = max(max(currentValue, sum) , max(include, exclude));
+    cout<<s1<<"  "<<s2<<"   "<<sum<<"  "<<s1.length()<<" "<<s2.length()<<endl;
+    dp[s1.length()][s2.length()] = maxValue;
+    return maxValue;
+}
+    
+    int longestCommonSubstr (string S1, string S2, int n, int m)
+    {
+        int sum = 0;
+        // your code here
+    vector<vector<int>> my_2d_vector(n+1, vector<int>(m+1, -1));
+
+        return LCSubstr(S1,S2, my_2d_vector, sum);
+    }
+*********************************************************************************************************************************    
