@@ -52,3 +52,21 @@ using namespace std;
         return LCSubstr(S1,S2, my_2d_vector, sum);
     }
 *********************************************************************************************************************************    
+
+
+// Print LCS
+
+string longestCommonSub(string s1, string s2) {
+    if (s1.length() == 0 || s2.length() == 0) {
+        return "";
+    }
+    
+    if (s1[0] == s2[0]) {
+        return s1[0] + longestCommonSub(s1.substr(1),s2.substr(1));
+    }
+    
+    string s3 = longestCommonSub(s1, s2.substr(1));
+    string s4 = longestCommonSub(s1.substr(1), s2);
+    
+    return s3.length() > s4.length() ? s3 : s4;
+}
