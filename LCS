@@ -70,3 +70,26 @@ string longestCommonSub(string s1, string s2) {
     
     return s3.length() > s4.length() ? s3 : s4;
 }
+
+// Print SCS
+string shortestCommonSupersequence(const string str1, const string str2) {
+    // Base cases: if either of the strings is empty
+    if (str1.length() == 0) {
+        return str2;
+    }
+    if (str2.length() == 0) {
+        return str1;
+    }
+
+    // If the last characters match
+    if (str1[0] == str2[0]) {
+        string str3 = str1[0] + shortestCommonSupersequence(str1.substr(1), str2.substr(1));
+        return str3;
+    }
+    // If the last characters don't match
+    string first = str1[0] + shortestCommonSupersequence(str1.substr(1), str2);
+    string second = str2[0] + shortestCommonSupersequence(str1, str2.substr(1));
+
+    // Return the shorter supersequence
+    return (first.length() < second.length()) ? first : second;
+}
