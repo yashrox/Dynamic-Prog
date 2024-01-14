@@ -93,3 +93,28 @@ string shortestCommonSupersequence(const string str1, const string str2) {
     // Return the shorter supersequence
     return (first.length() < second.length()) ? first : second;
 }
+
+
+
+
+
+// Print longest repeating subsequence with diff index
+
+string longestRepeatingSubsequence(string s1, string s2, int i, int j) {
+    // S1 = S2 = "AABEBCDD" -> ABD
+    if (s1.length() == i || s2.length() == j) {
+        return "";
+    }
+    if (s1[i] == s2[j] && i != j) {
+        return s1[i] + longestRepeatingSubsequence(s1, s2, i+1, j+1);
+    }
+    
+    string include = longestRepeatingSubsequence(s1,s2, i, j+1);
+    string exclude = longestRepeatingSubsequence(s1, s2, i+1, j);
+    
+    return include.length() > exclude.length() ? include : exclude;
+}
+
+
+
+
